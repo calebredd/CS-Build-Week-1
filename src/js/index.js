@@ -4,6 +4,8 @@ let cache1 = [0];
 let cache2 = [0];
 let genCounter = 0;
 let checkFace = 0;
+let color1 = '#a5c4fd';
+let color2 = '#a0f3d7';
 //Initial square size setup of GO Board
 let rowSize = 25;
 let colSize = 25;
@@ -15,6 +17,7 @@ function initialize(){
     cache1 = [0];
     cache2 = [0];
     $('#goBoard').empty();
+    $('#goBoard').css('background-color',color2);
     for(let i=0; i<rowSize; i++){
         $('#goBoard').append('<tr id="row'+i+'"></tr>');
         for(let j=0; j<colSize; j++){
@@ -42,9 +45,9 @@ function random(){
 	cache1=[0];
 	$('#goBoard tr td').each(function(index){
 		index = index + 1
-		$(this).css('background-color', '#FFF');
+		$(this).css('background-color', color1);
 		if( Math.random() < 0.5){
-			$(this).css('background-color', '#C0C0C0');
+			$(this).css('background-color', color2);
 			cache1[index]=1;
 		}else{
 			cache1[index]=0;
@@ -57,7 +60,7 @@ function randomBlank(){
 	cache1=[0];
 	$('#goBoard tr td').each(function(index){
 		index = index + 1
-		$(this).css('background-color', '#FFF');
+		$(this).css('background-color', color1);
 		if( Math.random() < 0.5){
 			cache1[index]=1;
 		}else{
@@ -91,13 +94,13 @@ function main(){
 				+cache1[indexCache[index]['br'] ];
             //console.log(index+' : '+neighbors);
 			if(	cache1[index] == 1 && (neighbors < 2 || neighbors > 3) ){
-				$(this).css('background-color', '#FFF');
+				$(this).css('background-color', color1);
                 if(checkFace > 0 && genCounter == 60){
                     $(this).css('background-color', 'black');
                 }
 				cache2[index] = 0;
 			}else if(	cache1[index] == 0 && neighbors == 3 ){
-				$(this).css('background-color', '#C0C0C0');
+				$(this).css('background-color', color2);
                 if(checkFace > 0 && genCounter == 60){
                     $(this).css('background-color', 'red');
                 }
@@ -124,13 +127,13 @@ function main(){
 				+cache2[indexCache[index]['br'] ];
 			//console.log(index+' : '+neighbors);
 			if(	cache2[index] == 1 && (neighbors < 2 || neighbors > 3) ){
-				$(this).css('background-color', '#FFF');
+				$(this).css('background-color', color1);
                 if(checkFace > 0 && genCounter == 60){
                     $(this).css('background-color', 'black');
                 }
 				cache1[index] = 0;
 			}else if( cache2[index] == 0 && neighbors == 3 ){
-                $(this).css('background-color', '#C0C0C0');
+                $(this).css('background-color', color2);
                 if(checkFace > 0 && genCounter == 60){
                     $(this).css('background-color', 'red');
                 }
@@ -207,28 +210,37 @@ function next(){
 	main();
 }
 function blinker(){
+    checkFace = 0;
 	cache1=[0];
 	cache2=[0];
     genCounter=0;
+    rowSize = 25;
+    colSize = 25;
+    $('#height')[0].value = 25;
+    $('#width')[0].value = 25;
+    initialize();
     $('#genCount')[0].textContent= genCounter;
 	$('#goBoard tr td').each(function(index){
 		index = index+1;
-		middle = Math.floor(colSize*rowSize/2);
+		middle = Math.floor( (colSize*rowSize)/2 );
 		if( index >= middle-1 && index <= middle+1){
-			$(this).css('background-color', '#C0C0C0');
+			$(this).css('background-color', color2);
 			cache1[index] = 1;
 		}else{
-			$(this).css('background-color', '#FFF');
+			$(this).css('background-color', color1);
 			cache1[index] = 0;
 		}
 	});
+    start();
 }
 function glider(){
+    checkFace = 0;
 	console.log('Glider was clicked');
     genCounter=0;
     $('#genCount')[0].textContent= genCounter;
 }
 function gliderGun(){
+    checkFace = 0;
 	console.log('Glider Gun was clicked');
     genCounter=0;
     $('#genCount')[0].textContent= genCounter;
@@ -242,10 +254,10 @@ function checkerboard(){
 	$('#goBoard tr td').each(function(index){
 		index = index+1;
 		if(index%2 < 1){
-			$(this).css('background-color', '#C0C0C0');
+			$(this).css('background-color', color2);
 			cache1[index] = 1;
 		}else{
-			$(this).css('background-color', '#FFF');
+			$(this).css('background-color', color1);
 			cache1[index] = 0;
 		}
 	});
@@ -255,18 +267,25 @@ function update(){
     rowSize = Number($('#height')[0].value);
     colSize = Number($('#width')[0].value);
     intervalSpeed = Number($('#speed')[0].value*1000);
+    color1 = $('#color1')[0].value;
+    color2 = $('#color2')[0].value;
     initialize();
     stop();
+}
+function updateSpeed(){
+    pause();
+    intervalSpeed = Number($('#speed')[0].value*1000);
+    start();
 }
 function mrSmiles(){
     checkFace = 1;
     stop();
     rowSize = 24;
     colSize = 24;
-    intervalSpeed = 50;
+    intervalSpeed = 100;
     $('#height')[0].value = 24;
     $('#width')[0].value = 24;
-    $('#speed')[0].value = .5;
+    $('#speed')[0].value = .1;
     initialize();
     stop();
     checkerboard();
