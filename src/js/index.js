@@ -210,40 +210,186 @@ function next(){
 	main();
 }
 function blinker(){
+    stop();
     checkFace = 0;
 	cache1=[0];
 	cache2=[0];
     genCounter=0;
-    rowSize = 25;
-    colSize = 25;
-    $('#height')[0].value = 25;
-    $('#width')[0].value = 25;
+    rowSize = 52;
+    colSize = 52;
+    $('#height')[0].value = 52;
+    $('#width')[0].value = 52;
     initialize();
     $('#genCount')[0].textContent= genCounter;
+    let middleArr = [];
+    middleArr[0] = Math.floor( colSize*rowSize/4  + colSize/4 );
+    middleArr[1] = Math.floor( colSize*rowSize/4  + 3*colSize/4 );
+    middleArr[2] = Math.floor( 3*colSize*rowSize/4  + 3*colSize/4 );
+    middleArr[3] = Math.floor( 3*colSize*rowSize/4  + colSize/4 );
 	$('#goBoard tr td').each(function(index){
 		index = index+1;
-		middle = Math.floor( (colSize*rowSize)/2 );
-		if( index >= middle-1 && index <= middle+1){
-			$(this).css('background-color', color2);
-			cache1[index] = 1;
-		}else{
-			$(this).css('background-color', color1);
-			cache1[index] = 0;
-		}
+        $(this).css('background-color', color1);
+        cache1[index] = 0;
+	});
+	$('#goBoard tr td').each(function(index){
+		index = index+1;
+        let sub = $(this);
+        middleArr.forEach(function(middle){
+            if( index >= middle-1 && index <= middle+1){
+                sub.css('background-color', color2);
+                cache1[index] = 1;
+            }
+        });
+	});
+    start();
+}
+function beehive(){
+    stop();
+    checkFace = 0;
+	cache1=[0];
+	cache2=[0];
+    genCounter=0;
+    rowSize = 52;
+    colSize = 52;
+    $('#height')[0].value = 52;
+    $('#width')[0].value = 52;
+    initialize();
+    $('#genCount')[0].textContent= genCounter;
+    let middleArr = [];
+    middleArr[0] = Math.floor( colSize*rowSize/4  + colSize/4 );
+    middleArr[1] = Math.floor( colSize*rowSize/4  + 3*colSize/4 );
+    middleArr[2] = Math.floor( 3*colSize*rowSize/4  + 3*colSize/4 );
+    middleArr[3] = Math.floor( 3*colSize*rowSize/4  + colSize/4 );
+	$('#goBoard tr td').each(function(index){
+		index = index+1;
+        $(this).css('background-color', color1);
+        cache1[index] = 0;
+	});
+	$('#goBoard tr td').each(function(index){
+		index = index+1;
+        let sub = $(this);
+        middleArr.forEach(function(middle){
+            if( index >= middle-1 && index <= middle+2){
+                sub.css('background-color', color2);
+                cache1[index] = 1;
+            }
+        });
 	});
     start();
 }
 function glider(){
+    stop();
     checkFace = 0;
-	console.log('Glider was clicked');
     genCounter=0;
     $('#genCount')[0].textContent= genCounter;
+	cache1=[0];
+	cache2=[0];
+    rowSize = 52;
+    colSize = 52;
+    $('#height')[0].value = 52;
+    $('#width')[0].value = 52;
+    initialize();
+    let middleArr = [];
+    middleArr[0] = Math.floor( colSize*rowSize/4  + colSize/4 );
+    middleArr[1] = Math.floor( colSize*rowSize/4  + 3*colSize/4 );
+    middleArr[2] = Math.floor( 3*colSize*rowSize/4  + 3*colSize/4 );
+    middleArr[3] = Math.floor( 3*colSize*rowSize/4  + colSize/4 );
+	$('#goBoard tr td').each(function(index){
+		index = index+1;
+        $(this).css('background-color', color1);
+        cache1[index] = 0;
+	});
+	$('#goBoard tr td').each(function(index){
+		index = index+1;
+        let sub = $(this);
+        middleArr.forEach(function(middle){
+            if( index >= middle-1 && index <= middle+1){
+                sub.css('background-color', color2);
+                cache1[index] = 1;
+            }else if( index == middle-colSize+1 || index == middle-colSize*2){
+                sub.css('background-color', color2);
+                cache1[index] = 1;
+            }
+        });
+	});
+    start();
 }
 function gliderGun(){
+    stop();
     checkFace = 0;
-	console.log('Glider Gun was clicked');
     genCounter=0;
     $('#genCount')[0].textContent= genCounter;
+	cache1=[0];
+	cache2=[0];
+    rowSize = 80;
+    colSize = 80;
+    $('#height')[0].value = 80;
+    $('#width')[0].value = 80;
+    initialize();
+    let middleArr = [];
+    middleArr[0] = Math.floor( colSize*rowSize/20  + colSize/6 );
+    middleArr[1] = middleArr[0]+colSize*11 ;
+    middleArr[2] = middleArr[1]+colSize*10-2;
+    middleArr[3] = middleArr[2]+colSize*9+2;
+    middleArr[4] = middleArr[3]+colSize*4-2;
+    
+    middleArr.push(middleArr[0]+1);
+    middleArr.push(middleArr[0]+colSize);
+    middleArr.push(middleArr[0]+colSize+1);
+
+    middleArr.push(middleArr[1]+1);
+    middleArr.push(middleArr[1]+2);
+    middleArr.push(middleArr[1]+colSize-1);
+    middleArr.push(middleArr[1]+colSize+3);
+    middleArr.push(middleArr[1]+colSize*2-2);
+    middleArr.push(middleArr[1]+colSize*2+4);
+    middleArr.push(middleArr[1]+colSize*3-1);
+    middleArr.push(middleArr[1]+colSize*3+3);
+    middleArr.push(middleArr[1]+colSize*4);
+    middleArr.push(middleArr[1]+colSize*4+1);
+    middleArr.push(middleArr[1]+colSize*4+2);
+    middleArr.push(middleArr[1]+colSize*5);
+    middleArr.push(middleArr[1]+colSize*5+1);
+    middleArr.push(middleArr[1]+colSize*5+2);
+
+    middleArr.push(middleArr[2]+1);
+    middleArr.push(middleArr[2]+2);
+    middleArr.push(middleArr[2]+colSize-1);
+    middleArr.push(middleArr[2]+colSize);
+    middleArr.push(middleArr[2]+colSize+2);
+    middleArr.push(middleArr[2]+colSize+3);
+    middleArr.push(middleArr[2]+colSize*2-1);
+    middleArr.push(middleArr[2]+colSize*2);
+    middleArr.push(middleArr[2]+colSize*2+2);
+    middleArr.push(middleArr[2]+colSize*2+3);
+    middleArr.push(middleArr[2]+colSize*3-1);
+    middleArr.push(middleArr[2]+colSize*3);
+    middleArr.push(middleArr[2]+colSize*3+1);
+    middleArr.push(middleArr[2]+colSize*3+2);
+    middleArr.push(middleArr[2]+colSize*3+3);
+    middleArr.push(middleArr[2]+colSize*4-2);
+    middleArr.push(middleArr[2]+colSize*4-1);
+    middleArr.push(middleArr[2]+colSize*4+3);
+    middleArr.push(middleArr[2]+colSize*4+4);
+
+    middleArr.push(middleArr[3]+1);
+
+    middleArr.push(middleArr[4]+1);
+    middleArr.push(middleArr[4]+colSize);
+    middleArr.push(middleArr[4]+colSize+1);
+
+
+	$('#goBoard tr td').each(function(index){
+		index = index+1;
+        if( middleArr.includes(index) ){
+            $(this).css('background-color', color2);
+            cache1[index] = 1;
+        }else{
+            $(this).css('background-color', color1);
+            cache1[index] = 0;
+        }
+	});
+    start();
 }
 function checkerboard(){
 //Checkerboard look, it's the small wins that count!
@@ -286,6 +432,18 @@ function mrSmiles(){
     $('#height')[0].value = 24;
     $('#width')[0].value = 24;
     $('#speed')[0].value = .1;
+    initialize();
+    stop();
+    checkerboard();
+    start();
+
+}
+function spaceInvasion(){
+    stop();
+    rowSize = 21;
+    colSize = 21;
+    $('#height')[0].value = 21;
+    $('#width')[0].value = 21;
     initialize();
     stop();
     checkerboard();
