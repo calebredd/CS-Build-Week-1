@@ -175,6 +175,7 @@ function main(){
             $('#warning').hide();
             stop();
             intervalSpeed = 500;
+            $('#speed')[0].value = .5;
             checkFace = 0;
         }
     }
