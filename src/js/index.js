@@ -6,6 +6,7 @@ let genCounter = 0;
 let checkFace = 0;
 let color1 = '#a5c4fd';
 let color2 = '#a0f3d7';
+let playing = 0;
 //Initial square size setup of GO Board
 let rowSize = 25;
 let colSize = 25;
@@ -21,7 +22,7 @@ function initialize(){
     for(let i=0; i<rowSize; i++){
         $('#goBoard').append('<tr id="row'+i+'"></tr>');
         for(let j=0; j<colSize; j++){
-            $('#row'+i).append('<td id="row'+i+'column'+j+'" data-index="'+indexCount+'" data-row="'+i+'" data-column="'+j+'" class="row'+i+' column'+j+'"></tr>');
+            $('#row'+i).append('<td id="row'+i+'column'+j+'" onclick="kill('+indexCount+')" data-index="'+indexCount+'" data-row="'+i+'" data-column="'+j+'" class="row'+i+' column'+j+'"></tr>');
             let tl = ( j != 0 && i != 0) ? indexCount-colSize-1 : 0;
             let tm = ( i != 0) ? indexCount-colSize : 0;
             let tr = ( j != colSize-1 && i != 0) ? indexCount-colSize+1 : 0;
@@ -39,6 +40,31 @@ function initialize(){
 }
 initialize();
 
+function kill(cellNum){
+    if(!playing){
+        let hexColor='#';
+        $('#warning').hide();
+        let rgbColor = $('td[data-index="'+cellNum+'"]').css('background-color');
+        let regex = /([0-9])\w+/g;
+        let found = rgbColor.match(regex);
+        found.forEach(function(hex){
+            hex = Number(hex).toString(16);
+            if (hex.length<2){
+                hex = "0"+hex;
+            }
+            hexColor += hex;
+        });
+        if(hexColor == color1){
+            $('td[data-index="'+cellNum+'"]').css('background-color', color2);
+            cache1[cellNum]=1;
+            cache2[cellNum]=1;
+        }else{
+            $('td[data-index="'+cellNum+'"]').css('background-color', color1);
+            cache1[cellNum]=0;
+            cache2[cellNum]=0;
+        }
+    }
+}
 //Randomly establish the board
 function random(){
 	cache2=[0];
@@ -55,17 +81,13 @@ function random(){
 	});
 	//console.log(cache1);
 }
-function randomBlank(){
+function blank(){
 	cache2=[0];
 	cache1=[0];
 	$('#goBoard tr td').each(function(index){
 		index = index + 1
 		$(this).css('background-color', color1);
-		if( Math.random() < 0.5){
-			cache1[index]=1;
-		}else{
 			cache1[index]=0;
-		}
 	});
     //console.log(cache1);
 }
@@ -152,14 +174,14 @@ function main(){
         $('#warning')[0].textContent = "ALL LIFE HAS CEASED TO EXIST";
         $('#warning').toggle();
     };
-    if(checkFace > 0){
+    if(checkFace){
         if(genCounter == 1){
             $('#goBoard')[0].style.transform='rotate(-90deg)';
         }
         if(genCounter == 60){
             pause();
             $('#goBoard')[0].style.marginBottom = "100px";
-            $('#warning')[0].textContent = "I SEE YOU!";
+            $('#warning')[0].textContent = "WHY SO SERIOUS?";
             $('#warning').toggle();
             setTimeout(function(){start()}, 3000);
         }
@@ -184,6 +206,7 @@ function main(){
 //Buttons and presets to maniuplate GO Board
 let intervals = [];
 function start(){
+    playing = 1;
     $('#warning').hide();
 	let startVar = setInterval(function(){
 		main();
@@ -193,8 +216,9 @@ function start(){
 	$('#pause').show();
 }
 function stop(){
+    playing = 0;
 	intervals.forEach(clearInterval);
-	randomBlank();
+	blank();
     genCounter=0;
     $('#genCount')[0].textContent= genCounter;
 	$('#pause').hide();
